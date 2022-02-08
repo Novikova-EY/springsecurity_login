@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
+
+<head th:replace="fragments/header.html :: head">
+</head>
+
+<body>
+
+<nav th:replace="fragments/header.html :: navigation">
+</nav>
+
+<div class="container">
+    <div class="row py-2">
+        <div class="col-12" sec:authorize="hasAnyRole('ROLE_ADMIN', 'ROLE_MANAGER')">
+            <a class="btn btn-primary" th:href="@{/product/new}">Add Product</a>
+        </div>
+
+        <form class="form-inline mt-3" method="get">
+            <div class="form-group mx-sm-3 mb-2">
+                <label for="name-filter" class="sr-only">Name filter:</label>
+                <input th:value="${param.nameFilter}" type="text" class="form-control"
+                       name="nameFilter" id="name-filter" placeholder="Name filter">
+            </div>
+            <button type="submit" class="btn btn-primary mb-2">Apply</button>
+        </form>
+
+        <div class="col-12">
+            <table class="table table-bordered my-2">
+                <thead>
+                <tr>
+                    <th th:replace="fragments/sort_header :: sort_header('Id', 'id')">Id</th>
+                    <th th:replace="fragments/sort_header :: sort_header('Name', 'name')">Name</th>
+                    <th th:replace="fragments/sort_header :: sort_header('Description', 'description')">Description</th>
+                    <th th:replace="fragments/sort_header :: sort_header('Category', 'category.name')">Category</th>
+                    <th th:replace="fragments/sort_header :: sort_header('Price', 'price')">Price</th>
+                    <th scope="col" sec:authorize="hasAnyRole('ADMIN', 'MANAGER')">Actions</th>
+                </tr>
+                </thead>
+                <tbody>
+
+                <tr th:unless="${products.empty}" th:each="product : ${products}">
+                    <th scope="row" th:text="${product.id}">1</th>
+                    <td th:text="${product.name}">name</td>
+                    <td th:text="${product.description}">description</td>
+                    <td th:text="${product.categoryName}">categoryName</td>
+                    <td th:text="${product.price}">price</td>
+                    <td sec:authorize="hasAnyRole('ADMIN', 'MANAGER')">
+                        <a class="btn btn-success" th:href="@{/product/{id}(id = ${product.id})}"><i
+                                class="fas fa-edit"></i></a>
+                        <form class="d-inline" th:method="delete" th:action="@{/product/{id}(id = ${product.id})}">
+                            <button type="submit" class="btn btn-danger"><i class="far fa-trash-alt"></i></button>
+                        </form>
+                    </td>
+                </tr>
+
+                <tr th:if="${products.empty}">
+                    <td colspan="5">No data</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="col-12">
+            <nav aria-label="...">
+                <ul class="pagination">
+                    <li th:classappend="${products.first} ? 'disabled'" class="page-item">
+                        <a class="page-link" th:href="@{/product(nameFilter=${param.nameFilter}, page=${products.number}, size=${param.size}, sort=${param.sort})}">Previous</a>
+                    </li>
+
+                    <li th:each="num : ${#numbers.sequence(1, products.totalPages)}"
+                        th:classappend="${num == products.number + 1} ? 'active'" class="page-item">
+                        <a class="page-link"
+                           th:href="@{/product(nameFilter=${param.nameFilter}, page=${num}, size=${param.size}, sort=${param.sort})}"
+                           th:text="${num}">1</a>
+                    </li>
+
+                    <li th:classappend="${products.last} ? 'disabled'" class="page-item">
+                        <a class="page-link" th:href="@{/product(nameFilter=${param.nameFilter}, page=${products.number + 2}, size=${param.size}, sort=${param.sort})}">Next</a>
+                    </li>
+                </ul>
+            </nav>
+
+        </div>
+    </div>
+</div>
+
+<th:block th:replace="fragments/footer.html :: scripts">
+</th:block>
+
+</body>
+
+</html>

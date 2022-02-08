@@ -1,0 +1,65 @@
+GET http://localhost:8080/mvc-app/api/v1/products
+
+###
+
+GET http://localhost:8080/mvc-app/api/v1/products/9
+
+###
+
+POST http://localhost:8080/mvc-app/api/v1/products
+Content-Type: application/json
+
+{
+  "name": "dgdf",
+  "description": "ggg",
+  "price": 222,
+  "categoryId": 4
+}
+
+###
+
+PUT http://localhost:8080/mvc-app/api/v1/products
+Content-Type: application/json
+
+{
+  "id": 33,
+  "name": "dgdhs",
+  "description": "ghdcfghf",
+  "price": 44,
+  "categoryId": 2
+}
+
+###
+
+DELETE http://localhost:8080/mvc-app/api/v1/products/33
+
+###
+
+GET http://localhost:8080/mvc-app/api/v1/categories
+
+###
+
+GET http://localhost:8080/mvc-app/api/v1/categories/1
+
+###
+
+POST http://localhost:8080/mvc-app/api/v1/categories
+Content-Type: application/json
+
+{
+  "name": "dgdf"
+}
+
+###
+
+PUT http://localhost:8080/mvc-app/api/v1/categories
+Content-Type: application/json
+
+{
+  "id": 5,
+  "name": "other"
+}
+
+###
+
+DELETE http://localhost:8080/mvc-app/api/v1/categories/5

@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="fragments/header.html :: head">
+</head>
+
+<body>
+
+<nav th:replace="fragments/header.html :: navigation">
+</nav>
+
+<div class="container">
+    <div class="row py-2">
+        <div class="col-12">
+            <a class="btn btn-primary" th:href="@{/user/new}">Add User</a>
+        </div>
+
+        <form class="form-inline mt-3" method="get">
+            <div class="form-group mx-sm-3 mb-2">
+                <label for="name-filter" class="sr-only">Name filter:</label>
+                <input th:value="${param.nameFilter}" type="text" class="form-control"
+                       name="nameFilter" id="name-filter" placeholder="Name filter">
+            </div>
+            <button type="submit" class="btn btn-primary mb-2">Apply</button>
+        </form>
+
+        <div class="col-12">
+            <table class="table table-bordered my-2">
+                <thead>
+                <tr>
+                    <th th:replace="fragments/sort_header :: sort_header('Id', 'id')">Id</th>
+                    <th th:replace="fragments/sort_header :: sort_header('Login', 'login')">Id</th>
+                    <th th:replace="fragments/sort_header :: sort_header('Role', 'role')">Id</th>
+                    <th scope="col">Actions</th>
+                </tr>
+                </thead>
+                <tbody>
+
+                <tr th:unless="${users.empty}" th:each="user : ${users}">
+                    <th scope="row" th:text="${user.id}">1</th>
+                    <td th:text="${user.login}">Alex</td>
+                    <td th:text="${user.roles}">Alex</td>
+                    <td>
+                        <a class="btn btn-success" th:href="@{/user/{id}(id = ${user.id})}"><i class="fas fa-edit"></i></a>
+                        <form class="d-inline" th:method="delete" th:action="@{/user/{id}(id = ${user.id})}">
+                            <button type="submit" class="btn btn-danger"><i class="far fa-trash-alt"></i></button>
+                        </form>
+                    </td>
+                </tr>
+
+                <tr th:if="${users.empty}">
+                    <td colspan="5">No data</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+
+<!--        <div class="col-12">-->
+<!--            <nav aria-label="...">-->
+<!--                <ul class="pagination">-->
+<!--                    <li class="page-item"-->
+<!--                        th:classappend="${products.first} ? 'disabled'">-->
+<!--                        <a class="page-link" href="#" tabindex="-1">Previous</a>-->
+<!--                    </li>-->
+
+<!--                    <li th:each="num : ${#numbers.sequence(1, products.totalPages)}"-->
+<!--                        th:classappend="${num == products.number + 1} ? 'active'" class="page-item">-->
+<!--                        <a class="page-link"-->
+<!--                           th:href="@{/product(nameFilter=${param.nameFilter}, page=${num}, size=${param.size}, sort=${param.sort})}"-->
+<!--                           th:text="${num}">1</a>-->
+<!--                    </li>-->
+
+<!--                    <li class="page-item"-->
+<!--                        th:classappend="${products.last} ? 'disabled'">-->
+<!--                        <a class="page-link" href="#">Next</a>-->
+<!--                    </li>-->
+<!--                </ul>-->
+<!--            </nav>-->
+<!--        </div>-->
+    </div>
+</div>
+
+<th:block th:replace="fragments/footer.html :: scripts">
+</th:block>
+
+</body>
+</html>
